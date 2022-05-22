@@ -12,7 +12,7 @@ struct list_entry {
 };
 
 SLIST_HEAD(list_head, list_entry);
-
+static pthread_mutex_t something;
 struct hash_table_entry {
 	struct list_head list_head;
 };
@@ -79,10 +79,16 @@ void hash_table_v2_add_entry(struct hash_table_v2 *hash_table,
 	struct list_entry *list_entry = get_list_entry(hash_table, key, list_head);
 
 	/* Update the value if it already exists */
+	//pthread_mutex_init(&something, NULL);
+	//pthread_mutex_lock(&something);
 	if (list_entry != NULL) {
 		list_entry->value = value;
+		pthread_mutex_unlock(&something);
+		pthread_mutex_destroy(&something);
 		return;
 	}
+	//pthread_mutex_unlock(&something);
+	//pthread_mutex_destroy(&something);
 
 	list_entry = calloc(1, sizeof(struct list_entry));
 	list_entry->key = key;
