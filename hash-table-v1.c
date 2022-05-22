@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/queue.h>
-
+#include <pthread.h>
 struct list_entry {
 	const char *key;
 	uint32_t value;
@@ -12,7 +12,7 @@ struct list_entry {
 };
 
 SLIST_HEAD(list_head, list_entry);
-
+static pthread_mutex_t lockk;
 struct hash_table_entry {
 	struct list_head list_head;
 };
@@ -29,6 +29,7 @@ struct hash_table_v1 *hash_table_v1_create()
 		struct hash_table_entry *entry = &hash_table->entries[i];
 		SLIST_INIT(&entry->list_head);
 	}
+	pthread_mutex_init(&lockk, NULL);
 	return hash_table;
 }
 
@@ -83,7 +84,9 @@ void hash_table_v1_add_entry(struct hash_table_v1 *hash_table,
 	list_entry = calloc(1, sizeof(struct list_entry));
 	list_entry->key = key;
 	list_entry->value = value;
+	pthread_mutex_lock(&lockk);
 	SLIST_INSERT_HEAD(list_head, list_entry, pointers);
+	pthread_mutex_unlock(&lockk);
 }
 
 uint32_t hash_table_v1_get_value(struct hash_table_v1 *hash_table,
@@ -108,5 +111,6 @@ void hash_table_v1_destroy(struct hash_table_v1 *hash_table)
 			free(list_entry);
 		}
 	}
+	pthread_mutex_destroy(&lockk);
 	free(hash_table);
 }
