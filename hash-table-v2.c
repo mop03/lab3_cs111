@@ -79,15 +79,15 @@ void hash_table_v2_add_entry(struct hash_table_v2 *hash_table,
  	uint32_t index = bernstein_hash(key) % HASH_TABLE_CAPACITY;
 	
 	/* Update the value if it already exists */
-//	pthread_mutex_lock(&hash_table->lists[index].lock);
+	pthread_mutex_lock(&hash_table->lists[index].lock);
 
 	if (list_entry != NULL) {
 		list_entry->value = value;
-//	        pthread_mutex_unlock(&hash_table->lists[index].lock);
-//		pthread_mutex_destroy(&hash_table->lists[index].lock);
+	        pthread_mutex_unlock(&hash_table->lists[index].lock);
+		pthread_mutex_destroy(&hash_table->lists[index].lock);
 		return;
 	}
-//	pthread_mutex_unlock(&hash_table->lists[index].lock);
+	pthread_mutex_unlock(&hash_table->lists[index].lock);
 
 	list_entry = calloc(1, sizeof(struct list_entry));
 	list_entry->key = key;

@@ -29,7 +29,7 @@ The first implementation strategy, for v1 with the single mutex, I declared my l
 top of my code, then I initialized the lock after initializing the hashtable entries. The crucial
 line to lock and unlock the lock was right before and after the SLIST INSERT HEAD within 
 the add_entry function. This is correct because it is after the calloc, and where the code has a critical section due to inserting. 
-
+I destroyed the lock right before the free of the hash-table.
 ### Performance
 
 Run the tester such that the base hash table completes in 1-2 seconds.
@@ -72,7 +72,7 @@ for each entry list in the hash-table.Then, the lock and unlock would occur arou
 SLIST_INSERT_HEAD line, as in v1 for each respective lock. Then,I created an extra checkpoint for locking, within the add_entry function consisting of code before, within, and after the if statement
 (lock before, unlock and destroy before return, and an unlock right outside
  the if statement). This is correct because it would result in better performance due to finer granularity and checking places for possible concurrency issues. 
-
+I destroyed the list of locks within the last for-loop before we free the hash-table. 
 ### Performance
 
 Run the tester such that the base hash table completes in 1-2 seconds.
