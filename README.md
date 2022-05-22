@@ -29,6 +29,30 @@ Run the tester such that the base hash table completes in 1-2 seconds.
 Report the relative speedup (or slow down) with a low number of threads and a
 high number of threads. Note that the amount of work (`-t` times `-s`) should
 remain constant. Explain any differences between the two.
+Running on Linux Server/Seasnet:
+Differences seen: the times for v1 and v2 are higher with the more threads.
+
+low number of threads:
+[mariam@lnxsrv13 ~/lab3_cs111]$ ./hash-table-tester -t 4 -s 100000
+Generation: 66,473 usec
+Hash table base: 1,046,586 usec
+  - 0 missing
+Hash table v1: 284,078 usec
+  - 0 missing
+Hash table v2: 313,880 usec
+  - 0 missing
+
+
+
+high number of threads:
+[mariam@lnxsrv13 ~/lab3_cs111]$ ./hash-table-tester -t 8 -s 50000
+Generation: 66,240 usec
+Hash table base: 1,000,631 usec
+  - 0 missing
+Hash table v1: 455,903 usec
+  - 0 missing
+Hash table v2: 355,444 usec
+  - 0 missing
 
 
 ## Second Implementation
@@ -45,6 +69,8 @@ physical cores on your machine (at least 4). Note again that the amount of work
 (`-t` times `-s`) should remain constant. Report the speedup relative to the
 base hash table implementation. Explain the difference between this
 implementation and your first, which respect why you get a performance increase.
+
+Running on VM:
 
 ## Cleaning up
 
