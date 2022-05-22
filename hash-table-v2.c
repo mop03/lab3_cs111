@@ -12,7 +12,6 @@ struct list_entry {
 };
 
 SLIST_HEAD(list_head, list_entry);
-static pthread_mutex_t something;
 struct hash_table_entry {
 	struct list_head list_head;
 };
